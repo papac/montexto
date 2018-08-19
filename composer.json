@@ -1,0 +1,24 @@
+{
+    "name": "papac/montexto",
+    "description": "Montexto is a high quality SMS platform which enables you to integrate any of your applications with our SMS message sending and receiving system",
+    "type": "library",
+    "require": {
+        "guzzlehttp/guzzle": "^6.3@dev"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Franck Dakia",
+            "email": "dakiafranck@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Montexto\\": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "require-dev": {
+        "phpunit/phpunit": "^7.4@dev"
+    }
+}
