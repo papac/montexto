@@ -146,7 +146,7 @@ class Client
      * @param $response
      * @return \Montexto\Response
      */
-    public function formatResponse(Response $response)
+    private function formatResponse(Response $response)
     {
         $data = json_decode($response->getBody()->getContents(), true);
 
