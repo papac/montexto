@@ -48,3 +48,13 @@ $response = $client->getSendedMessages();
 ## Test
 
 pour lancer les tests unitaires, veuillez créer un fichier `config.php` dans le dossier `tests` et ensuite lancer le test.
+
+Ajoutez le code suivant dans le fichier `config.php`:
+
+```php
+return [
+    'email' => 'email', 
+    'password' => 'password', 
+    'sendername' => 'Sender Name'
+];
+```
