@@ -1,7 +1,6 @@
 # Montexto PHP SDK
 
-__Montexto__ is a high quality SMS platform which enables you to integrate any of your applications with our SMS message sending and receiving system. 
-The main advantage of our system is its simplicity of implementation. The SMS message may have your company name or any phone number that you own as sender name.
+[__Montexto__](https://www.montexto.pro) is a high quality SMS platform which enables you to integrate any of your applications with our SMS message sending and receiving system. The main advantage of our system is its simplicity of implementation. The SMS message may have your company name or any phone number that you own as sender name.
 
 ## Installation
 
