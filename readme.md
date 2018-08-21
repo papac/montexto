@@ -45,3 +45,7 @@ $response = $client->getConsumedCredits();
 // Récupération des messages envoyés
 $response = $client->getSendedMessages();
 ```
+
+## Test
+
+pour lancer les tests unitaires, veuillez créer un fichier `config.php` dans le dossier `tests` et ensuite lancer le test.
