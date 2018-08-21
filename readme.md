@@ -7,7 +7,7 @@
 Pour installer une copie de l'SDK.
 
 ```bash
-composer require montexto/montexto
+composer require papac/montexto
 ```
 
 ## Utilisation
