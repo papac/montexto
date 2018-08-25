@@ -97,16 +97,14 @@ class Client
     /**
      * Get SMS credits
      *
-     * @return \Montexto\Response
+     * @return int
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getCredits()
     {
-        $response = $this->client->request('POST', $this->buildEndpointUrl('credits_sms'), [
-            'form_params' => $this->tokenizer()
-        ]);
-
-        return $this->formatResponse($response);
+        $response = $this->consulteAccount('credits_sms');
+    
+        return (int) $response->get('credits_sms');
     }
 
     /**
@@ -117,7 +115,44 @@ class Client
      */
     public function getConsumedCredits()
     {
-        $response = $this->client->request('POST', $this->buildEndpointUrl('credits_consumed_sms'), [
+        $response = $this->consulteAccount('credits_consumed_sms');
+
+        return (int) $response->get('credits_consumed');
+    }
+
+    /**
+     * Get all sended message
+     *
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getSendedMessages()
+    {
+        $response = $this->getSendedMessagesWithResponse();
+
+        return $response->get('messages');
+    }
+
+    /**
+     * Get all sended message
+     *
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getSendedMessagesWithResponse()
+    {
+        $response = $this->consulteAccount('messages_sent', 'GET');
+
+        return $response;
+    }
+
+    /**
+     * Send consulte account request
+     *
+     * @param string $type
+     * @return \Montexto\Response
+     */
+    private function consulteAccount($type, $method = 'POST')
+    {
+        $response = $this->client->request($method, $this->buildEndpointUrl($type), [
             'form_params' => $this->tokenizer()
         ]);
 
@@ -169,27 +204,11 @@ class Client
     }
 
     /**
-     * Get all sended message
-     *
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
-    public function getSendedMessages()
-    {
-        $response = $this->client->request('POST', $this->buildEndpointUrl('messages_sent'), [
-            'form_params' => $this->tokenizer()
-        ]);
-
-        $data = $this->formatResponse($response);
-
-        return $data;
-    }
-
-    /**
      * Expiration date
      *
      * @return mixed
      */
-    public function tokenExpiratedDate()
+    public function tokenExpirateDate()
     {
         $this->checkIfHasLogged();
 

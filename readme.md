@@ -18,8 +18,8 @@ L'utilisation du package est rélativement simple:
 use Montexto\Montexto
 
 $mon_texto = new Montexto([
-    'email' => 'email', 
-    'password' => 'password', 
+    'email' => 'email',
+    'password' => 'password',
     'brand' => 'Sender Name'
 ]);
 
@@ -51,6 +51,22 @@ Envoyé un message simple
 ```php
 // configuration préalable
 $response = $client->send($number, $message);
+
+$response->get('status');
+```
+
+Information de la réponse en JSON avec `response->toJson()`
+
+```json
+{
+    "id": 20180805155735,
+    "status": "true",
+    "number": "22549625874",
+    "message": "lorem ipsum demo Montexto.pro",
+    "total_of_message_sent": "1",
+    "sms_remaining": "1248",
+    "send_type": "api"
+}
 ```
 
 ### Envoie d'SMS à plusieur numéro
@@ -67,13 +83,15 @@ $response = $client->sendMany([$number, $number], $message);
 Récupération de votre crédits
 
 ```php
-$response = $client->getCredits();
+$credits = $client->getCredits();
+// => 100 par exemple
 ```
 
 Récupération de votre crédits consommé
 
 ```php
-$response = $client->getConsumedCredits();
+$credits = $client->getConsumedCredits();
+// => 100 par exemple
 ```
 
 ### Liste des messages envoyés
@@ -81,12 +99,63 @@ $response = $client->getConsumedCredits();
 Récupération des messages envoyés
 
 ```php
-$response = $client->getSendedMessages();
+$messages = $client->getSendedMessages();
+
+// C'est un tableau du style:
+[
+    [
+      "id" => "APIMONTEXTO2018-08-041683125",
+      "message" => "AAAAAAAAAAAA",
+      "number" => "2254698745",
+      "total_of_message_sent": "1",
+      "status" => "1",
+      "sender" => "MONTEXTO",
+      "id_compte" => "6"
+    ],
+    [
+      "id" => "APIMONTEXTO2018-08-041263125",
+      "message" => "AAAAAAAAAAAA",
+      "number" => "2254698745",
+      "total_of_message_sent" => "1",
+      "status" => "1",
+      "sender" => "MONTEXTO",
+      "id_compte" => "6"
+    ]
+];
+```
+
+```php
+$response = $client->getSendedMessagesWithResponse();
+
+$response->get('messages');
+
+// C'est un tableau du style:
+[
+    [
+      "id" => "APIMONTEXTO2018-08-041683125",
+      "message" => "AAAAAAAAAAAA",
+      "number" => "2254698745",
+      "total_of_message_sent": "1",
+      "status" => "1",
+      "sender" => "MONTEXTO",
+      "id_compte" => "6"
+    ],
+    [
+      "id" => "APIMONTEXTO2018-08-041263125",
+      "message" => "AAAAAAAAAAAA",
+      "number" => "2254698745",
+      "total_of_message_sent" => "1",
+      "status" => "1",
+      "sender" => "MONTEXTO",
+      "id_compte" => "6"
+    ]
+];
 ```
 
 ### La Réponse `response`
 
 Si vous remaquez bien dans ce que vous lisez ci-dessus, il y a c'est la variable `response`.
+C'est un objet de la classe `Montexto\Response`. Elle permet de manipuler facilement de réponse du du serveur.
 
 ## Test
 
@@ -96,9 +165,9 @@ Ajoutez le code suivant dans le fichier `config.php`:
 
 ```php
 return [
-    'email' => 'email', 
-    'password' => 'password', 
-    'brand' => 'Sender Name'
+    'email' => 'email',
+    'password' => 'password',
+    'brand' => 'Sender Name',
     'numbers' => ['number1', 'number2']
 ];
 ```

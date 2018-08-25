@@ -57,4 +57,43 @@ class MontextoTest extends PHPUnit\Framework\TestCase
 
         $this->assertTrue($response->get('status'));
     }
+
+    public function testGetCredist()
+    {
+        $montexto = new \Montexto\Montexto($this->config);
+
+        $client = $montexto->login();
+
+        $this->assertTrue($client->isLogin());
+
+        $credits = $client->getCredits();
+
+        $this->assertTrue(is_int($credits));
+    }
+
+    public function testGetConsumedCredits()
+    {
+        $montexto = new \Montexto\Montexto($this->config);
+
+        $client = $montexto->login();
+
+        $this->assertTrue($client->isLogin());
+
+        $credits = $client->getConsumedCredits();
+
+        $this->assertTrue(is_int($credits));
+    }
+
+    public function testGetSendedMessages()
+    {
+        $montexto = new \Montexto\Montexto($this->config);
+
+        $client = $montexto->login();
+
+        $this->assertTrue($client->isLogin());
+
+        $credits = $client->getSendedMessages();
+
+        $this->assertTrue(is_array($credits));
+    }
 }
