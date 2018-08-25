@@ -2,4 +2,7 @@
 
 namespace Montexto\Exception;
 
-class LoginException extends \Exception {}
+class LoginException extends \Exception
+{
+
+}

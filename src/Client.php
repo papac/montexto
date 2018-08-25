@@ -52,7 +52,7 @@ class Client
 
     /**
      * Set the client brand
-     * 
+     *
      * @param string $brand
      */
     public function setBrand($brand)
@@ -212,7 +212,7 @@ class Client
 
     /**
      * Get the request API KEY
-     * 
+     *
      * @return null|string
      */
     public function getKey()
@@ -224,7 +224,7 @@ class Client
     
     /**
      * Get the request Token
-     * 
+     *
      * @return null|string
      */
     public function getToken()
@@ -236,7 +236,7 @@ class Client
 
     /**
      * Check if the client has logged
-     * 
+     *
      * @throws \Montexto\Exception\LoginException
      */
     private function checkIfHasLogged()
