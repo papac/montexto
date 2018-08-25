@@ -2,7 +2,7 @@
 
 namespace Montexto;
 
-trait URL
+trait UrlVersionner
 {
     /**
      * The API version

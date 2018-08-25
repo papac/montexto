@@ -40,7 +40,7 @@ class MontextoTest extends PHPUnit\Framework\TestCase
 
         $this->assertTrue($client->isLogin());
 
-        $response = $client->send('22578988547', 'Hello, world');
+        $response = $client->send($this->config['numbers'][0], 'Hello, world');
 
         $this->assertTrue($response->get('status'));
     }
@@ -53,7 +53,7 @@ class MontextoTest extends PHPUnit\Framework\TestCase
 
         $this->assertTrue($client->isLogin());
 
-        $response = $client->sendMany(['22578988547', '22578958547'], 'Hello, world. Many');
+        $response = $client->sendMany($this->config['numbers'], 'Hello, world. Many');
 
         $this->assertTrue($response->get('status'));
     }

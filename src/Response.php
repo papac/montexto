@@ -15,24 +15,36 @@ class Response implements \ArrayAccess
     private $error;
 
     /**
+     * @var array
+     */
+    const MESSAGE = [
+        8000 => "Request success",
+        8401 => 'API account does not exist',
+        8402 => 'Error with Key API and/or Token API',
+        8403 => 'Check your message or the number entered',
+        8404 => 'You do not have enough SMS credit',
+        8406 => 'You rights to send your message to a single recipient',
+        8407 => 'SenderName does not exist or Not actived',
+        8408 => 'You will need to send to at least 2 recipients with this method'
+    ];
+
+    /**
      * Response constructor.
      * @param array $data
      */
     public function __construct(array $data)
     {
         $this->data = $data;
-
-        $this->error = new ErrorMessage;
     }
 
     /**
-     * Check if is
+     * Check if request fails
      *
      * @return bool
      */
     public function fails()
     {
-        return !$this->data['status'] || isset($this->data['error']);
+        return isset($this->data['error']) || !$this->data['status'];
     }
 
     /**
@@ -42,11 +54,7 @@ class Response implements \ArrayAccess
      */
     public function getMessage()
     {
-        if ($this->fails()) {
-            return $this->error->get($this->get('error'));
-        }
-
-        return null;
+        return static::MESSAGE[$this->getCode()];
     }
 
     /**
@@ -56,11 +64,7 @@ class Response implements \ArrayAccess
      */
     public function getCode()
     {
-        if ($this->fails()) {
-            return $this->get('error');
-        }
-
-        return 0;
+        return $this->fails() ? $this->get('error') : 8000;
     }
 
     /**
@@ -133,7 +137,7 @@ class Response implements \ArrayAccess
      */
     public function offsetSet($offset, $value)
     {
-        throw new \ErrorException('The action is not allows');
+        throw new \BadMethodCallException('The action is not allows');
     }
 
     /**
@@ -142,6 +146,6 @@ class Response implements \ArrayAccess
      */
     public function offsetUnset($offset)
     {
-        throw new \ErrorException('The action is not allows');
+        throw new \BadMethodCallException('The action is not allows');
     }
 }

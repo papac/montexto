@@ -6,7 +6,7 @@ use GuzzleHttp\Client as GuzzleClient;
 
 class Montexto
 {
-    use URL;
+    use UrlVersionner;
 
     /**
      * @param array
@@ -31,6 +31,8 @@ class Montexto
      */
     public function __construct(array $config, $login = false)
     {
+        $config['brand'] = isset($config['brand']) ? $config['brand'] : 'MONTEXTO';
+        
         $this->client = new GuzzleClient();
 
         $this->config = $config;
@@ -63,9 +65,11 @@ class Montexto
 
         $credentials = json_decode($response->getBody()->getContents(), true);
 
-        $credentials['sendername'] = isset($this->config['sendername']) ? $this->config['sendername'] : 'MONTEXTO';
+        $client = new Client($credentials);
 
-        return new Client($credentials, $this->client);
+        $client->setBrand($this->config['brand']);
+
+        return $client;
     }
 
     /**

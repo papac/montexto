@@ -7,7 +7,7 @@ use GuzzleHttp\Psr7\Response;
 
 class Client
 {
-    use URL;
+    use UrlVersionner;
 
     /**
      * @var array
@@ -20,15 +20,20 @@ class Client
     private $client;
 
     /**
+     * @var string
+     */
+    private $brand = 'MONTEXTO';
+
+    /**
      * Client constructor.
      * @param array $credentials
      * @param GuzzleClient $client
      */
-    public function __construct($credentials, GuzzleClient $client)
+    public function __construct($credentials)
     {
         $this->credentials = $credentials;
 
-        $this->client = $client;
+        $this->client = new GuzzleClient;
     }
 
     /**
@@ -43,6 +48,16 @@ class Client
         }
 
         return true;
+    }
+
+    /**
+     * Set the client brand
+     * 
+     * @param string $brand
+     */
+    public function setBrand($brand)
+    {
+        $this->brand = $brand;
     }
 
     /**
@@ -88,7 +103,7 @@ class Client
     public function getCredits()
     {
         $response = $this->client->request('POST', $this->buildEndpointUrl('credits_sms'), [
-            'form_params' => $this->tokenize()
+            'form_params' => $this->tokenizer()
         ]);
 
         return $this->formatResponse($response);
@@ -103,7 +118,7 @@ class Client
     public function getConsumedCredits()
     {
         $response = $this->client->request('POST', $this->buildEndpointUrl('credits_consumed_sms'), [
-            'form_params' => $this->tokenize()
+            'form_params' => $this->tokenizer()
         ]);
 
         return $this->formatResponse($response);
@@ -114,7 +129,7 @@ class Client
      *
      * @return array
      */
-    private function tokenize()
+    private function tokenizer()
     {
         return [
             'Key_api' => $this->credentials['Key_api'],
@@ -136,7 +151,7 @@ class Client
             'Token_api' => $this->credentials['Token_api'],
             'Message' => $message,
             'Destinataire' => implode(',', (array) $number),
-            'SenderName' => $this->credentials['sendername']
+            'SenderName' => $this->brand
         ];
     }
 
@@ -161,7 +176,7 @@ class Client
     public function getSendedMessages()
     {
         $response = $this->client->request('POST', $this->buildEndpointUrl('messages_sent'), [
-            'form_params' => $this->tokenize()
+            'form_params' => $this->tokenizer()
         ]);
 
         $data = $this->formatResponse($response);
@@ -174,8 +189,60 @@ class Client
      *
      * @return mixed
      */
-    public function expirateDate()
+    public function tokenExpiratedDate()
     {
+        $this->checkIfHasLogged();
+
         return $this->credentials['Expiration_date_api'];
+    }
+
+    /**
+     * Expiration date
+     *
+     * @return mixed
+     */
+    public function tokenExpirated()
+    {
+        $this->checkIfHasLogged();
+
+        $time = strtotime($this->credentials['Expiration_date_api']);
+
+        return $time < time();
+    }
+
+    /**
+     * Get the request API KEY
+     * 
+     * @return null|string
+     */
+    public function getKey()
+    {
+        $this->checkIfHasLogged();
+
+        return $this->credentials['Key_api'];
+    }
+    
+    /**
+     * Get the request Token
+     * 
+     * @return null|string
+     */
+    public function getToken()
+    {
+        $this->checkIfHasLogged();
+
+        return $this->credentials['Token_api'];
+    }
+
+    /**
+     * Check if the client has logged
+     * 
+     * @throws \Montexto\Exception\LoginException
+     */
+    private function checkIfHasLogged()
+    {
+        if (!$this->isLogin()) {
+            throw new \Montexto\Exception\LoginException("The client is not connected", 1);
+        }
     }
 }
